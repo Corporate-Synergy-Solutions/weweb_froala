@@ -1,16 +1,7 @@
 export default {
-  editor: {
-    label: {
-      en: "My Element",
+    editor: {
+        label: {
+            en: 'Froala editor',
+        },
     },
-  },
-  properties: {
-    textColor: {
-      label: {
-        en: "Text color",
-      },
-      type: "Color",
-      defaultValue: "#F23636",
-    },
-  },
 };
