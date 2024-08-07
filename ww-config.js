@@ -5,6 +5,13 @@ export default {
         },
     },
     properties: {
+        key: {
+            label: {
+                en: 'Froala key',
+            },
+            type: 'Text',
+            defaultValue: '',
+        },
         idComponentBind: {
             label: {
                 en: 'Id component bind',

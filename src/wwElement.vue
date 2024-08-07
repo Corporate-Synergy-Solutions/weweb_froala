@@ -1,5 +1,5 @@
 <template>
-    <froala v-model:value="data" :config="config"></froala>
+    <froala ref="editor" v-model:value="data" :config="config"></froala>
 </template>
 
 <script setup>
@@ -7,15 +7,17 @@ import { Froala } from './vue-froala/vue-froala.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
-import { ref, defineProps, computed } from 'vue';
+import { ref, defineProps, computed, watch } from 'vue';
 
 const props = defineProps({
     content: { type: Object, required: true },
 });
 const data = ref('');
 
+const editor = ref(null);
+
 const fileAllowedTypes = computed(() => {
-    let arr = ['application/pdf'];
+    let arr = ['application/pdf']; // default if customAllowTypes is true
     if (props.content.customAllowTypes) {
         if (props.content.allowPpt)
             arr.push(
@@ -39,9 +41,10 @@ const fileAllowedTypes = computed(() => {
     }
     return arr;
 });
+
 const config = computed(() => {
     return {
-        key: 'OXC1lD4I3B14A7C8C7D5dNSWXa1c1MDe1CI1PLPFa1F1EESFKVlA6F6D5A4A1D3C11A3A5D4==',
+        key: props.content.key,
         heightMin: 450,
         // Image upload configuration
         imageUploadParam: 'image',
@@ -76,4 +79,13 @@ const config = computed(() => {
         },
     };
 });
+
+watch(
+    () => props.content.key,
+    () => {
+        // remount froala editor
+        editor.value.destroyEditor();
+        setTimeout(() => editor.value.createEditor(), 500);
+    }
+);
 </script>
