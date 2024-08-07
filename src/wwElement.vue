@@ -1,58 +1,79 @@
 <template>
-    <froala v-model:value="content" :config="config"></froala>
+    <froala v-model:value="data" :config="config"></froala>
 </template>
 
-<script>
+<script setup>
 import { Froala } from './vue-froala/vue-froala.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
-export default {
-    components: { Froala },
-    props: {
-        content: { type: Object, required: true },
-    },
-    data() {
-        return {
-            content: '<span>Hello iqbal</span>',
-        };
-    },
-    computed: {
-        config() {
-            return {
-                key: 'OXC1lD4I3B14A7C8C7D5dNSWXa1c1MDe1CI1PLPFa1F1EESFKVlA6F6D5A4A1D3C11A3A5D4==',
-                heightMin: 450,
-                // Image upload configuration
-                imageUploadParam: 'image',
-                imageUploadURL: 'https://xwvz-k0fo-ac9j.g7.xano.io/api:Tmvy3k_t/temp_message_image',
-                imageUploadParams: { id: 'froala-upload' },
-                imageUploadMethod: 'POST',
-                imageMaxSize: 5 * 1024 * 1024,
-                imageAllowedTypes: ['jpeg', 'jpg', 'png'],
+import { ref, defineProps, computed } from 'vue';
 
-                // Video upload configuration
-                videoUploadParam: 'video',
-                videoUploadURL: 'https://xwvz-k0fo-ac9j.g7.xano.io/api:Tmvy3k_t/temp_message_video',
-                videoUploadParams: { id: 'froala-upload' },
-                videoUploadMethod: 'POST',
-                videoMaxSize: 50 * 1024 * 1024,
-                videoAllowedTypes: ['webm', 'ogg', 'mp4'],
+const props = defineProps({
+    content: { type: Object, required: true },
+});
+const data = ref('');
 
-                // File upload configuration
-                fileUploadParam: 'file',
-                fileUploadURL: 'https://xwvz-k0fo-ac9j.g7.xano.io/api:Tmvy3k_t/temp_message_file',
-                fileUploadParams: { id: 'froala-upload' },
-                fileUploadMethod: 'POST',
-                fileMaxSize: 20 * 1024 * 1024,
-                fileAllowedTypes: [
-                    'application/pdf',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                ],
-            };
+const fileAllowedTypes = computed(() => {
+    let arr = ['application/pdf'];
+    if (props.content.customAllowTypes) {
+        if (props.content.allowPpt)
+            arr.push(
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+            );
+        if (props.content.allowDoc)
+            arr.push('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword');
+        if (props.content.allowExcel)
+            arr.push('application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    } else {
+        arr = [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.ms-excel',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+    }
+    return arr;
+});
+const config = computed(() => {
+    return {
+        key: 'OXC1lD4I3B14A7C8C7D5dNSWXa1c1MDe1CI1PLPFa1F1EESFKVlA6F6D5A4A1D3C11A3A5D4==',
+        heightMin: 450,
+        // Image upload configuration
+        imageUploadParam: 'image',
+        imageUploadURL: props.content.imageUploadURL,
+        imageUploadParams: { id: 'froala-image-upload' },
+        imageUploadMethod: 'POST',
+        imageMaxSize: 5 * 1024 * 1024,
+        imageAllowedTypes: ['jpeg', 'jpg', 'png'],
+
+        // Video upload configuration
+        videoUploadParam: 'video',
+        videoUploadURL: props.content.videoUploadURL,
+        videoUploadParams: { id: 'froala-video-upload' },
+        videoUploadMethod: 'POST',
+        videoMaxSize: 50 * 1024 * 1024,
+        videoAllowedTypes: ['webm', 'ogg', 'mp4'],
+
+        // File upload configuration
+        fileUploadParam: 'file',
+        fileUploadURL: props.content.fileUploadURL,
+        fileUploadParams: { id: 'froala-file-upload' },
+        fileUploadMethod: 'POST',
+        fileMaxSize: 20 * 1024 * 1024,
+        fileAllowedTypes: fileAllowedTypes.value,
+        htmlExecuteScripts: false,
+        attribution: false,
+        events: {
+            contentChanged: function () {
+                const currentContent = this.html.get();
+                wwLib.wwVariable.updateValue(props.content.idComponentBind, currentContent);
+            },
         },
-    },
-};
+    };
+});
 </script>
