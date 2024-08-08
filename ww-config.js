@@ -12,6 +12,20 @@ export default {
             type: 'Text',
             defaultValue: '',
         },
+        placeholderText: {
+            label: {
+                en: 'Placeholder text',
+            },
+            type: 'Text',
+            defaultValue: '',
+        },
+        spellcheck: {
+            label: {
+                en: 'Spellcheck',
+            },
+            type: 'OnOff',
+            defaultValue: true,
+        },
         idComponentBind: {
             label: {
                 en: 'Id component bind',
@@ -26,9 +40,9 @@ export default {
             type: 'Text',
             defaultValue: '',
         },
-        imageUploadURL: {
+        videoUploadURL: {
             label: {
-                en: 'Image upload URL',
+                en: 'Video upload URL',
             },
             type: 'Text',
             defaultValue: '',
@@ -71,6 +85,27 @@ export default {
             },
             hidden: content => !content.customAllowTypes,
             defaultValue: true,
+        },
+        wordCharCounter: {
+            type: 'OnOff',
+            label: {
+                en: 'Show word counter',
+            },
+            bindable: true,
+            defaultValue: false,
+        },
+        wordCounterMax: {
+            label: {
+                en: 'Word counter max',
+            },
+            type: 'Number',
+            options: {
+                min: 1,
+                max: 10000,
+                step: 100,
+            },
+            defaultValue: 5000,
+            hidden: content => !content.wordCharCounter,
         },
     },
 };

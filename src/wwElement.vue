@@ -46,6 +46,14 @@ const config = computed(() => {
     return {
         key: props.content.key,
         heightMin: 450,
+        fontFamilySelection: true,
+        fontFamilyDefaultSelection: 'Inter',
+        placeholderText: props.content.placeholderText,
+        attribution: false,
+        spellcheck: props.content.spellcheck,
+        charCounterCount: props.content.wordCharCounter,
+        wordCounterCount: props.content.wordCharCounter,
+        wordCounterMax: props.content.wordCharCounter ? props.content.wordCounterMax : -1,
         // Image upload configuration
         imageUploadParam: 'image',
         imageUploadURL: props.content.imageUploadURL,
@@ -70,18 +78,36 @@ const config = computed(() => {
         fileMaxSize: 20 * 1024 * 1024,
         fileAllowedTypes: fileAllowedTypes.value,
         htmlExecuteScripts: false,
-        attribution: false,
         events: {
             contentChanged: function () {
                 const currentContent = this.html.get();
                 wwLib.wwVariable.updateValue(props.content.idComponentBind, currentContent);
+            },
+            // error handling
+            'image.error': function (error, response) {
+                console.log(error, response, 'error occurred while trying to load the image.');
+            },
+            'file.error': function (error, response) {
+                console.log(error, response, 'error occurred while trying to insert a video by embedded code');
+            },
+            'video.codeError': function (code) {
+                console.log(code, 'error occurred while trying to insert a video by embedded code');
+            },
+            'video.linkError': function (link) {
+                console.log(link, 'error occurred while trying to insert a video by URL');
             },
         },
     };
 });
 
 watch(
-    () => props.content.key,
+    () => [
+        props.content.key,
+        props.content.wordCharCounter,
+        props.content.placeholderText,
+        props.content.wordCounterMax,
+        props.content.spellcheck,
+    ],
     () => {
         // remount froala editor
         editor.value.destroyEditor();
