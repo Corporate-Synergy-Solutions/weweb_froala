@@ -5,7 +5,7 @@ export const Froala = defineComponent({
     name: 'froala',
     props: ['tag', 'value', 'config', 'onManualControllerReady', 'modelValue'],
     emits: ['update:value', 'manual-controller-ready'],
-    expose: ['createEditor', 'destroyEditor'], // for key purposes
+    expose: ['createEditor', 'destroyEditor', 'getEditor'], // for key purposes
     watch: {
         value: function () {
             this.model = this.value;

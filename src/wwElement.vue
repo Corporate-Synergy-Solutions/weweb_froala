@@ -7,7 +7,7 @@ import { Froala } from './vue-froala/vue-froala.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
-import { ref, defineProps, computed, watch } from 'vue';
+import { ref, defineProps, computed, watch, onMounted } from 'vue';
 
 const props = defineProps({
     content: { type: Object, required: true },
@@ -114,4 +114,19 @@ watch(
         setTimeout(() => editor.value.createEditor(), 500);
     }
 );
+
+watch(
+    () => props.content.disableEditor,
+    value => {
+        // remount froala editor
+        if (value) editor.value.getEditor().edit.off();
+        else editor.value.getEditor().edit.on();
+    }
+);
+
+onMounted(() => {
+    if (props.content.idComponentBind) {
+        data.value = wwLib.wwVariable.getValue(props.content.idComponentBind) || data.value;
+    }
+});
 </script>

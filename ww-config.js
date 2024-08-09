@@ -18,6 +18,7 @@ export default {
             },
             type: 'Text',
             defaultValue: '',
+            bindable: true,
         },
         spellcheck: {
             label: {
@@ -28,10 +29,18 @@ export default {
         },
         idComponentBind: {
             label: {
-                en: 'Id component bind',
+                en: 'Content variable id',
             },
             type: 'Text',
             defaultValue: '',
+        },
+        disableEditor: {
+            type: 'OnOff',
+            label: {
+                en: 'Disable editor',
+            },
+            bindable: true,
+            defaultValue: false,
         },
         imageUploadURL: {
             label: {
@@ -39,6 +48,7 @@ export default {
             },
             type: 'Text',
             defaultValue: '',
+            bindable: true,
         },
         videoUploadURL: {
             label: {
@@ -46,6 +56,7 @@ export default {
             },
             type: 'Text',
             defaultValue: '',
+            bindable: true,
         },
         fileUploadURL: {
             label: {
@@ -53,6 +64,7 @@ export default {
             },
             type: 'Text',
             defaultValue: '',
+            bindable: true,
         },
         customAllowTypes: {
             label: {
