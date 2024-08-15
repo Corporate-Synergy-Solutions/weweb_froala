@@ -126,7 +126,8 @@ watch(
 
 onMounted(() => {
     if (props.content.idComponentBind) {
-        data.value = wwLib.wwVariable.getValue(props.content.idComponentBind) || data.value;
+        const html = wwLib.wwVariable.getValue(props.content.idComponentBind);
+        data.value = html ? editor.value.clean.html(html) : editor.value.clean.html(data.value);
     }
 });
 </script>
