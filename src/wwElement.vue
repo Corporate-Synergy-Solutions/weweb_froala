@@ -1,5 +1,5 @@
 <template>
-    <froala ref="editor" v-model:value="data" :config="config"></froala>
+    <froala ref="editor" :config="config"></froala>
 </template>
 
 <script setup>
@@ -12,7 +12,6 @@ import { ref, defineProps, computed, watch, onMounted } from 'vue';
 const props = defineProps({
     content: { type: Object, required: true },
 });
-const data = ref('');
 
 const editor = ref(null);
 
@@ -127,9 +126,7 @@ watch(
 onMounted(() => {
     if (props.content.idComponentBind) {
         const html = wwLib.wwVariable.getValue(props.content.idComponentBind);
-        data.value = html ? editor.value.clean.html(html) : editor.value.clean.html(data.value);
-        editor.value.destroyEditor();
-        setTimeout(() => editor.value.createEditor(), 500);
+        editor.value.getEditor().html.insert(html, true);
     }
 });
 </script>
