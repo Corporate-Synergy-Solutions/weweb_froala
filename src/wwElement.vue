@@ -1,5 +1,5 @@
 <template>
-    <froala ref="editor" :config="config"></froala>
+    <froala ref="editor" v-model:value="data" :config="config"></froala>
 </template>
 
 <script setup>
@@ -7,12 +7,13 @@ import { Froala } from './vue-froala/vue-froala.js';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
-import { ref, defineProps, computed, watch, onMounted } from 'vue';
+import { ref, defineProps, computed, watch } from 'vue';
 
 const props = defineProps({
     content: { type: Object, required: true },
 });
 
+const data = ref('');
 const editor = ref(null);
 
 const fileAllowedTypes = computed(() => {
@@ -82,6 +83,11 @@ const config = computed(() => {
                 const currentContent = this.html.get();
                 wwLib.wwVariable.updateValue(props.content.idComponentBind, currentContent);
             },
+            initialized: function () {
+                if (props.content.idComponentBind) {
+                    data.value = wwLib.wwVariable.getValue(props.content.idComponentBind) || '';
+                }
+            },
             // error handling
             'image.error': function (error, response) {
                 console.log(error, response, 'error occurred while trying to load the image.');
@@ -122,11 +128,4 @@ watch(
         else editor.value.getEditor().edit.on();
     }
 );
-
-onMounted(() => {
-    if (props.content.idComponentBind) {
-        const html = wwLib.wwVariable.getValue(props.content.idComponentBind);
-        editor.value.getEditor().html.insert(html, true);
-    }
-});
 </script>
