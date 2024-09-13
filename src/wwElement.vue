@@ -56,7 +56,7 @@ const config = computed(() => {
         wordCounterMax: props.content.wordCharCounter ? props.content.wordCounterMax : -1,
         // Image upload configuration
         imageUploadParam: 'image',
-        imageUploadURL: props.content.imageUploadURL,
+        imageUploadURL: props.content.imageUploadURL || null,
         imageUploadParams: { id: 'froala-image-upload' },
         imageUploadMethod: 'POST',
         imageMaxSize: 5 * 1024 * 1024,
@@ -64,7 +64,7 @@ const config = computed(() => {
 
         // Video upload configuration
         videoUploadParam: 'video',
-        videoUploadURL: props.content.videoUploadURL,
+        videoUploadURL: props.content.videoUploadURL || null,
         videoUploadParams: { id: 'froala-video-upload' },
         videoUploadMethod: 'POST',
         videoMaxSize: 50 * 1024 * 1024,
@@ -72,7 +72,7 @@ const config = computed(() => {
 
         // File upload configuration
         fileUploadParam: 'file',
-        fileUploadURL: props.content.fileUploadURL,
+        fileUploadURL: props.content.fileUploadURL || null,
         fileUploadParams: { id: 'froala-file-upload' },
         fileUploadMethod: 'POST',
         fileMaxSize: 20 * 1024 * 1024,
