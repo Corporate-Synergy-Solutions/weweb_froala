@@ -129,3 +129,15 @@ watch(
     }
 );
 </script>
+
+<style lang="scss">
+.fr-element {
+    a {
+        color: rgb(0, 0, 238);
+        text-decoration-line: underline;
+        &:visited {
+            color: rgb(85, 26, 139);
+        }
+    }
+}
+</style>
